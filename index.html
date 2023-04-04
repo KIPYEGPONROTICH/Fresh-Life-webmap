@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 1112px;
+            height: 571px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/wastecollectionandconsolidationcentres_1.js"></script>
+        <script src="data/SubLocation_Boundary_2.js"></script>
+        <script src="data/Vllage_Boundary_3.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-1.3618010867980117,36.655220185404175],[-1.2220085788433384,36.92583332246651]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleMaps_0');
+        map.getPane('pane_GoogleMaps_0').style.zIndex = 400;
+        var layer_GoogleMaps_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleMaps_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_GoogleMaps_0;
+        map.addLayer(layer_GoogleMaps_0);
+        function pop_wastecollectionandconsolidationcentres_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Toilet_Nam</th>\
+                        <td>' + (feature.properties['Toilet_Nam'] !== null ? autolinker.link(feature.properties['Toilet_Nam'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Area</strong><br />' + (feature.properties['Area'] !== null ? autolinker.link(feature.properties['Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Region</th>\
+                        <td>' + (feature.properties['Region'] !== null ? autolinker.link(feature.properties['Region'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">EASTINGS</th>\
+                        <td>' + (feature.properties['EASTINGS'] !== null ? autolinker.link(feature.properties['EASTINGS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NORTHINGS</th>\
+                        <td>' + (feature.properties['NORTHINGS'] !== null ? autolinker.link(feature.properties['NORTHINGS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_wastecollectionandconsolidationcentres_1_0() {
+            return {
+                pane: 'pane_wastecollectionandconsolidationcentres_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(243,166,178,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_wastecollectionandconsolidationcentres_1');
+        map.getPane('pane_wastecollectionandconsolidationcentres_1').style.zIndex = 401;
+        map.getPane('pane_wastecollectionandconsolidationcentres_1').style['mix-blend-mode'] = 'normal';
+        var layer_wastecollectionandconsolidationcentres_1 = new L.geoJson(json_wastecollectionandconsolidationcentres_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_wastecollectionandconsolidationcentres_1',
+            layerName: 'layer_wastecollectionandconsolidationcentres_1',
+            pane: 'pane_wastecollectionandconsolidationcentres_1',
+            onEachFeature: pop_wastecollectionandconsolidationcentres_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_wastecollectionandconsolidationcentres_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_wastecollectionandconsolidationcentres_1);
+        map.addLayer(layer_wastecollectionandconsolidationcentres_1);
+        function pop_SubLocation_Boundary_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Id</th>\
+                        <td>' + (feature.properties['Id'] !== null ? autolinker.link(feature.properties['Id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_SubLocation_Boundary_2_0() {
+            return {
+                pane: 'pane_SubLocation_Boundary_2',
+                opacity: 1,
+                color: 'rgba(216,35,220,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_SubLocation_Boundary_2');
+        map.getPane('pane_SubLocation_Boundary_2').style.zIndex = 402;
+        map.getPane('pane_SubLocation_Boundary_2').style['mix-blend-mode'] = 'normal';
+        var layer_SubLocation_Boundary_2 = new L.geoJson(json_SubLocation_Boundary_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_SubLocation_Boundary_2',
+            layerName: 'layer_SubLocation_Boundary_2',
+            pane: 'pane_SubLocation_Boundary_2',
+            onEachFeature: pop_SubLocation_Boundary_2,
+            style: style_SubLocation_Boundary_2_0,
+        });
+        bounds_group.addLayer(layer_SubLocation_Boundary_2);
+        map.addLayer(layer_SubLocation_Boundary_2);
+        function pop_Vllage_Boundary_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Id</th>\
+                        <td>' + (feature.properties['Id'] !== null ? autolinker.link(feature.properties['Id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Vllage_Boundary_3_0() {
+            return {
+                pane: 'pane_Vllage_Boundary_3',
+                opacity: 1,
+                color: 'rgba(35,35,142,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Vllage_Boundary_3');
+        map.getPane('pane_Vllage_Boundary_3').style.zIndex = 403;
+        map.getPane('pane_Vllage_Boundary_3').style['mix-blend-mode'] = 'normal';
+        var layer_Vllage_Boundary_3 = new L.geoJson(json_Vllage_Boundary_3, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Vllage_Boundary_3',
+            layerName: 'layer_Vllage_Boundary_3',
+            pane: 'pane_Vllage_Boundary_3',
+            onEachFeature: pop_Vllage_Boundary_3,
+            style: style_Vllage_Boundary_3_0,
+        });
+        bounds_group.addLayer(layer_Vllage_Boundary_3);
+        map.addLayer(layer_Vllage_Boundary_3);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Vllage_Boundary_3.png" /> Vllage_Boundary': layer_Vllage_Boundary_3,'<img src="legend/SubLocation_Boundary_2.png" /> Sub-Location_Boundary': layer_SubLocation_Boundary_2,'<img src="legend/wastecollectionandconsolidationcentres_1.png" /> waste collection and consolidation centres': layer_wastecollectionandconsolidationcentres_1,"Google Maps": layer_GoogleMaps_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_wastecollectionandconsolidationcentres_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Toilet_Nam'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Toilet_Nam']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_wastecollectionandconsolidationcentres_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        map.addControl(new L.Control.Search({
+            layer: layer_wastecollectionandconsolidationcentres_1,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'Toilet_Nam'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        resetLabels([layer_wastecollectionandconsolidationcentres_1]);
+        map.on("zoomend", function(){
+            resetLabels([layer_wastecollectionandconsolidationcentres_1]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_wastecollectionandconsolidationcentres_1]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_wastecollectionandconsolidationcentres_1]);
+        });
+        </script>
+    </body>
+</html>
